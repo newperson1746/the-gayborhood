@@ -21,7 +21,7 @@ export default class SoHoPplGet {
     
     interaction.reply({
       embeds: [stdembed],
-      ephemeral: true
+      ephemeral: false
     })
     .then( () => {
     sqlGetSohoPeople((error, results, fields) => {

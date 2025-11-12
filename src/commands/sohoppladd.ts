@@ -29,7 +29,7 @@ export default class SohoPplAdd {
     stdembed.setDescription(`Please wait...`);
     interaction.reply({
       embeds: [stdembed],
-      ephemeral: true
+      ephemeral: false
     })
     .then( () => {
       sqlWriteSohoPeople(member.id.toString(), (error, results, fields) => {

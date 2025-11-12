@@ -31,7 +31,7 @@ export default class SohoPplRm {
     stdembed.setDescription(`Please wait...`);
     interaction.reply({
       embeds: [stdembed],
-      ephemeral: true
+      ephemeral: false
     })
     .then( () => {
   
