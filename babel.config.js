@@ -7,7 +7,7 @@ const presets = [
     },
   ],
   '@babel/preset-typescript',
-  'minify',
+  // 'minify', can't use because of builtin math usage now
 ];
 
 module.exports = {

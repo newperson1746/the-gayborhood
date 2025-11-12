@@ -13,11 +13,11 @@ const sqlconfig = {
   connectionLimit: 10
 }
 
-const sqlconfigmc = {
-  host: process.env.SQLMC_HOST,
-  user: process.env.SQLMC_USER,
-  database: process.env.SQLMC_DB,
-  password: process.env.SQLMC_PASS,
+const sqlconfigsoho = {
+  host: process.env.SQLSOHO_HOST,
+  user: process.env.SQLSOHO_USER,
+  database: process.env.SQLSOHO_DB,
+  password: process.env.SQLSOHO_PASS,
   connectionLimit: 10
 }
 
@@ -28,7 +28,7 @@ const pool = mysql.createPool(sqlconfig, (err) => {
   }
 });
 
-const poolmc = mysql.createPool(sqlconfigmc, (err) => {
+const poolsoho = mysql.createPool(sqlconfigsoho, (err) => {
   if (err) {
     console.error('Error creating MC SQL pool:', err);
     return;
@@ -48,7 +48,7 @@ pool.getConnection((err, connection) => {
   connection.release();
 });
 
-poolmc.getConnection((err, connection) => {
+poolsoho.getConnection((err, connection) => {
   if (err) {
     console.error('Error getting MC MySQL pool connection:', err);
     return;
@@ -68,7 +68,7 @@ pool.on('acquire', function (connection) {
   });
 });
 
-poolmc.on('acquire', function (connection) {
+poolsoho.on('acquire', function (connection) {
   console.log('MySQL MC pool connection %d acquired', connection.threadId);
   connection.on('error', function (err) {
     console.error('Error with MC MySQL connection:', err);
@@ -89,7 +89,7 @@ function getMySQLVersion() {
 }
 
 function getMySQLVersionMC() {
-  poolmc.query('SELECT version()', (error, results, fields) => {
+  poolsoho.query('SELECT version()', (error, results, fields) => {
     if (error) {
       console.error(error);
       return;
@@ -100,4 +100,4 @@ function getMySQLVersionMC() {
   });
 }
 
-export { pool, poolmc, getMySQLVersion, getMySQLVersionMC };
+export { pool, poolsoho, getMySQLVersion, getMySQLVersionMC };
