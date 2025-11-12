@@ -1,5 +1,5 @@
 // MySQL, crypto
-import { pool, poolsoho } from './mysql_init';
+import { pool, poolmc } from './mysql_init';
 import { QueryError, FieldPacket } from 'mysql2';
 import { ChildProcessWithoutNullStreams, spawnSync, SpawnSyncReturns } from 'child_process';
 import { createStdEmbed } from './embeds'
@@ -114,7 +114,7 @@ function sqlWriteMcUuid(discordid: string, mcuuid: number, callback: (error: any
 }
 
 function sqlGetSohoPeople(callback: (error: QueryError | null, results: any[], fields: FieldPacket[]) => void) {
-    poolsoho.query('SELECT * FROM sohopeople',
+    pool.query('SELECT * FROM sohopeople',
     (error: QueryError | null, results: any[], fields: FieldPacket[]) => {
         if (error) {
             console.log(error);
@@ -129,7 +129,7 @@ function sqlGetSohoPeople(callback: (error: QueryError | null, results: any[], f
 // This gets only a single person. All data is on the first row,
 // so results[0].key
 function sqlGetSohoPerson(discordid: string, callback: (error: QueryError | null, results: any[], fields: FieldPacket[]) => void) {
-    poolsoho.query('SELECT * FROM sohopeople WHERE discordid = ?', [discordid],
+    pool.query('SELECT * FROM sohopeople WHERE discordid = ?', [discordid],
     (error: QueryError | null, results: any[], fields: FieldPacket[]) => {
         if (error) {
             console.log(error);
@@ -149,7 +149,7 @@ function sqlGetSohoPerson(discordid: string, callback: (error: QueryError | null
 // and accumulate the total time spent
 // in a separate table
 function sqlWriteSohoPeople(discordid: string, callback: (error: any, result: string | null) => void) {
-  poolsoho.query(
+  pool.query(
     'INSERT INTO sohopeople (discordid, time) VALUES (?, UNIX_TIMESTAMP()) ON DUPLICATE KEY UPDATE time = UNIX_TIMESTAMP()',
     [discordid],
     (error: QueryError | null, results: any, fields: FieldPacket[]) => {
@@ -163,7 +163,7 @@ function sqlWriteSohoPeople(discordid: string, callback: (error: any, result: st
 }
 
 function sqlRemoveSohoPeople(discordid: string, callback: (error: any, result: any) => void) {
-  poolsoho.query(
+  pool.query(
     'DELETE FROM sohopeople WHERE discordid = ?',
     [discordid],
     (error: QueryError | null, result: any) => {
@@ -178,7 +178,7 @@ function sqlRemoveSohoPeople(discordid: string, callback: (error: any, result: a
 
 // Write the accumulated time to the streaks table
 function sqlWriteSohoStreak(discordid: string, timetoadd: string, callback: (error: any, result: string | null) => void) {
-  poolsoho.query(
+  pool.query(
     'INSERT INTO sohostreaks (discordid, totaltime) VALUES (?, ?) ON DUPLICATE KEY UPDATE totaltime = totaltime + VALUES(totaltime)',
     [discordid, timetoadd],
     (error: QueryError | null, results: any, fields: FieldPacket[]) => {
@@ -193,7 +193,7 @@ function sqlWriteSohoStreak(discordid: string, timetoadd: string, callback: (err
 
 // Get the accumulated time from the streaks table
 function sqlGetSohoStreak(discordid: string, callback: (error: QueryError | null, results: any[], fields: FieldPacket[]) => void) {
-    poolsoho.query('SELECT * FROM sohostreaks WHERE discordid = ?', [discordid],
+    pool.query('SELECT * FROM sohostreaks WHERE discordid = ?', [discordid],
     (error: QueryError | null, results: any[], fields: FieldPacket[]) => {
         if (error) {
             console.log(error);

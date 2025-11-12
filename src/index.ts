@@ -75,7 +75,7 @@ client.on(Discord.Events.ClientReady, async () => {
 
   const guild = await client.guilds.fetch(process.env.GUILD_ID);
   const channel = await guild.channels.fetch(process.env.BOT_MESSAGES_CHANNEL_ID) as Discord.TextChannel | null;
-  await channel.send(`I'm ready to be edgy meow heheh meow`)
+  await channel.send(`I'm ready to be gay heheh ribbet`)
 
   for (const file of commandFiles) {
     const name = file.endsWith('.ts')
@@ -93,7 +93,7 @@ client.on(Discord.Events.ClientReady, async () => {
   }
 
   // UNIX Sockets IPC
-  const socketPath = '/var/run/sillybots/meowbotipc';
+  const socketPath = '/var/run/sillybots/prismbotipc';
   const SoHoVc = await guild.channels.fetch(process.env.SOHO_VC_ID) as Discord.VoiceChannel;
   const SoHoTc = await guild.channels.fetch(process.env.SOHO_TC_ID) as Discord.TextChannel;
   // Remove existing socket file if it exists
